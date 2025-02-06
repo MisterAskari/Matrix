@@ -3,7 +3,6 @@ using namespace std;
 
 const int MAX_SIZE = 100;
 
-
 void inputMatrix(int matrix[MAX_SIZE][MAX_SIZE], int& rows, int& cols) {
     do {
         cout << "Enter number of rows (1 to " << MAX_SIZE << "): ";
@@ -23,7 +22,6 @@ void inputMatrix(int matrix[MAX_SIZE][MAX_SIZE], int& rows, int& cols) {
     }
 }
 
-
 void printMatrix(int matrix[MAX_SIZE][MAX_SIZE], int rows, int cols) {
     for (int i = 0; i < rows; ++i) {
         for (int j = 0; j < cols; ++j) {
@@ -33,7 +31,6 @@ void printMatrix(int matrix[MAX_SIZE][MAX_SIZE], int rows, int cols) {
     }
 }
 
-
 void addMatrices(int A[MAX_SIZE][MAX_SIZE], int B[MAX_SIZE][MAX_SIZE], int result[MAX_SIZE][MAX_SIZE], int rows, int cols) {
     for (int i = 0; i < rows; ++i) {
         for (int j = 0; j < cols; ++j) {
@@ -42,7 +39,6 @@ void addMatrices(int A[MAX_SIZE][MAX_SIZE], int B[MAX_SIZE][MAX_SIZE], int resul
     }
 }
 
-
 void subtractMatrices(int A[MAX_SIZE][MAX_SIZE], int B[MAX_SIZE][MAX_SIZE], int result[MAX_SIZE][MAX_SIZE], int rows, int cols) {
     for (int i = 0; i < rows; ++i) {
         for (int j = 0; j < cols; ++j) {
@@ -50,7 +46,6 @@ void subtractMatrices(int A[MAX_SIZE][MAX_SIZE], int B[MAX_SIZE][MAX_SIZE], int 
         }
     }
 }
-
 
 bool multiplyMatrices(int A[MAX_SIZE][MAX_SIZE], int B[MAX_SIZE][MAX_SIZE], int result[MAX_SIZE][MAX_SIZE], int rowsA, int colsA, int rowsB, int colsB) {
     if (colsA != rowsB) {
@@ -69,7 +64,6 @@ bool multiplyMatrices(int A[MAX_SIZE][MAX_SIZE], int B[MAX_SIZE][MAX_SIZE], int 
     return true;
 }
 
-
 void sumRows(int matrix[MAX_SIZE][MAX_SIZE], int rows, int cols) {
     for (int i = 0; i < rows; ++i) {
         int sum = 0;
@@ -79,7 +73,6 @@ void sumRows(int matrix[MAX_SIZE][MAX_SIZE], int rows, int cols) {
         cout << "Sum of row " << i + 1 << ": " << sum << endl;
     }
 }
-
 
 void sumColumns(int matrix[MAX_SIZE][MAX_SIZE], int rows, int cols) {
     for (int j = 0; j < cols; ++j) {
@@ -91,7 +84,6 @@ void sumColumns(int matrix[MAX_SIZE][MAX_SIZE], int rows, int cols) {
     }
 }
 
-
 int sumMainDiagonal(int matrix[MAX_SIZE][MAX_SIZE], int size) {
     int sum = 0;
     for (int i = 0; i < size; ++i) {
@@ -99,7 +91,6 @@ int sumMainDiagonal(int matrix[MAX_SIZE][MAX_SIZE], int size) {
     }
     return sum;
 }
-
 
 int countZeros(int matrix[MAX_SIZE][MAX_SIZE], int rows, int cols) {
     int count = 0;
@@ -112,7 +103,6 @@ int countZeros(int matrix[MAX_SIZE][MAX_SIZE], int rows, int cols) {
     }
     return count;
 }
-
 
 const char* identifyMatrixType(int matrix[MAX_SIZE][MAX_SIZE], int size) {
     int upperTriangular = 1; 
@@ -128,53 +118,96 @@ const char* identifyMatrixType(int matrix[MAX_SIZE][MAX_SIZE], int size) {
     return "Neither";
 }
 
-int main() {
-    int matrixA[MAX_SIZE][MAX_SIZE], matrixB[MAX_SIZE][MAX_SIZE], result[MAX_SIZE][MAX_SIZE];
-    int rowsA, colsA, rowsB, colsB;
+
+void sortMatrix(int matrix[MAX_SIZE][MAX_SIZE], int rows, int cols) {
+    int temp[MAX_SIZE * MAX_SIZE];
+    int index = 0;
 
     
+    for (int i = 0; i < rows; ++i) {
+        for (int j = 0; j < cols; ++j) {
+            temp[index++] = matrix[i][j];
+        }
+    }
+
+    
+    for (int i = 0; i < index - 1; ++i) {
+        for (int j = 0; j < index - i - 1; ++j) {
+            if (temp[j] > temp[j + 1]) {
+                
+                int tempValue = temp[j];
+                temp[j] = temp[j + 1];
+                temp[j + 1] = tempValue;
+            }
+        }
+    }
+
+    
+    index = 0;
+    for (int i = 0; i < rows; ++i) {
+        for (int j = 0; j < cols; ++j) {
+            matrix[i][j] = temp[index++];
+        }
+    }
+}
+
+
+void searchInMatrix(int matrix[MAX_SIZE][MAX_SIZE], int rows, int cols, int value) {
+    for (int i = 0; i < rows; ++i) {
+        for (int j = 0; j < cols; ++j) {
+            if (matrix[i][j] == value) {
+                cout << "Value " << value << " found at position: Row " << i + 1 << ", Column " << j + 1 << endl;
+                return; 
+            }
+        }
+    }
+    cout << "Value " << value << " not found in the matrix." << endl;
+}
+
+int main() {
+    int matrixA[MAX_SIZE][ MAX_SIZE], matrixB[MAX_SIZE][MAX_SIZE], result[MAX_SIZE][MAX_SIZE];
+    int rowsA, colsA, rowsB, colsB;
+
     cout << "Input Matrix A:\n";
     inputMatrix(matrixA, rowsA, colsA);
 
     cout << "Input Matrix B:\n";
     inputMatrix(matrixB, rowsB, colsB);
 
-    
-    cout << "Matrix A:\n";
+    cout << "Matrix A :\n";
     printMatrix(matrixA, rowsA, colsA);
     cout << "Matrix B:\n";
     printMatrix(matrixB, rowsB, colsB);
 
-    
     cout << "Sum of Matrix A and B:\n";
     addMatrices(matrixA, matrixB, result, rowsA, colsA);
     printMatrix(result, rowsA, colsA);
 
-    
     cout << "Subtraction of Matrix A and B:\n";
     subtractMatrices(matrixA, matrixB, result, rowsA, colsA);
     printMatrix(result, rowsA, colsA);
 
-    
     if (multiplyMatrices(matrixA, matrixB, result, rowsA, colsA, rowsB, colsB)) {
         cout << "Multiplication of Matrix A and B:\n";
         printMatrix(result, rowsA, colsB);
     }
 
-    
     sumRows(matrixA, rowsA, colsA);
-
-    
     sumColumns(matrixA, rowsA, colsA);
-
-    
     cout << "Sum of main diagonal: " << sumMainDiagonal(matrixA, rowsA) << endl;
-
-    
     cout << "Number of zero elements in the matrix: " << countZeros(matrixA, rowsA, colsA) << endl;
+    cout << "Matrix type: " << identifyMatrixType(matrixA, rowsA) << endl;
 
     
-    cout << "Matrix type: " << identifyMatrixType(matrixA, rowsA) << endl;
+    sortMatrix(matrixA, rowsA, colsA);
+    cout << "Sorted Matrix A:\n";
+    printMatrix(matrixA, rowsA, colsA);
+
+    
+    int value;
+    cout << "Enter a value to search in Matrix A: ";
+    cin >> value;
+    searchInMatrix(matrixA, rowsA, colsA, value);
 
     return 0;
 }
